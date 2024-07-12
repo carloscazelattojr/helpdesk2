@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: 'user-service-api'
+  data:
+    mongodb:
+      uri: 'mongodb+srv://helpdeskuser:helpdeskuser@cluster0.kpvzad8.mongodb.net/helpdeskdb?retryWrites=true&w=majority&appName=Cluster0'
+      auto-index-creation: true
+

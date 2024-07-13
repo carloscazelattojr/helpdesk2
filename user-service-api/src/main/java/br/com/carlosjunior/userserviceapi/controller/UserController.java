@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import models.exceptions.StandardError;
 import models.requests.CreateUserRequest;
 import models.responses.UserResponse;
@@ -42,14 +43,12 @@ public interface UserController {
             @ApiResponse(responseCode = "400", description = "Bad request",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = StandardError.class)
-                    )),
+                            schema = @Schema(implementation = StandardError.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = StandardError.class)
-                    ))
+                            schema = @Schema(implementation = StandardError.class)))
     })
     @PostMapping
-    ResponseEntity<Void> salve(@RequestBody final CreateUserRequest createUserRequest);
+    ResponseEntity<Void> salve(@Valid @RequestBody final CreateUserRequest createUserRequest);
 }

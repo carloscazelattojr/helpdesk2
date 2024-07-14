@@ -2,6 +2,7 @@ package br.com.carlosjunior.userserviceapi.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,6 +15,8 @@ import models.responses.UserResponse;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Tag(name = "UserController", description = "Controller responsible for user operations")
 @RequestMapping("/api/users")
@@ -51,4 +54,18 @@ public interface UserController {
     })
     @PostMapping
     ResponseEntity<Void> salve(@Valid @RequestBody final CreateUserRequest createUserRequest);
+
+    @Operation(summary = "Find all users")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Users Found",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            array = @ArraySchema(schema = @Schema(implementation = UserResponse.class)))),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = StandardError.class)))
+    })
+    @GetMapping
+    ResponseEntity<List<UserResponse>> findAll();
 }

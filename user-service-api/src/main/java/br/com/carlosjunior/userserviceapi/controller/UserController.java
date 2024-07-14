@@ -54,7 +54,7 @@ public interface UserController {
                             schema = @Schema(implementation = StandardError.class)))
     })
     @PostMapping
-    ResponseEntity<Void> salve(@Valid @RequestBody final CreateUserRequest createUserRequest);
+    ResponseEntity<Void> salve(@Valid @RequestBody final CreateUserRequest request);
 
     @Operation(summary = "Find all users")
     @ApiResponses(value = {
@@ -92,5 +92,5 @@ public interface UserController {
     @PutMapping("/{id}")
     ResponseEntity<UserResponse> update(@Parameter(description = "User id", required = true, example = "6691886ba9704548a17da12e")
                                         @PathVariable(name = "id") final String id,
-                                        @Valid @RequestBody final UpdateUserRequest updateUserRequest);
+                                        @Valid @RequestBody final UpdateUserRequest request);
 }

@@ -44,7 +44,7 @@ dependencies {
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
 
     // Spring Security Crypto to encode password
-//    implementation 'org.springframework.security:spring-security-crypto:5.5.1'
+    implementation 'org.springframework.security:spring-security-crypto:5.5.1'
 
     // Dependência de teste
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

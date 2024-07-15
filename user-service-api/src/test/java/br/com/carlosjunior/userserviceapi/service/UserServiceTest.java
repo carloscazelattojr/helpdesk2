@@ -5,6 +5,7 @@ import br.com.carlosjunior.userserviceapi.mapper.UserMapper;
 import br.com.carlosjunior.userserviceapi.repository.UserRepository;
 import models.exceptions.ResourceNotFoundException;
 import models.requests.CreateUserRequest;
+import models.requests.UpdateUserRequest;
 import models.responses.UserResponse;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -73,7 +74,7 @@ class UserServiceTest {
     @Test
     void whenCallFindAllThenReturnListOfUserResponse() {
         when(repository.findAll()).thenReturn(List.of(new User(), new User()));
-        when(mapper.fromEntity(any(User.class))).thenReturn(mock(UserResponse.class));
+        when(mapper.fromEntity(any(User.class))).thenReturn(generateMock(UserResponse.class));
 
         final var response = service.findAll();
 
@@ -119,6 +120,68 @@ class UserServiceTest {
         verify(mapper, times(0)).fromRequest(request);
         verify(passwordEncoder, times(0)).encode(request.password());
         verify(repository, times(0)).save(any(User.class));
+    }
+
+    @Test
+    void whenCallUpdateWithInvalidIdThenThrowResourceNotFoundException() {
+        final var request = generateMock(UpdateUserRequest.class);
+
+        when(repository.findById(anyString())).thenReturn(Optional.empty());
+
+        try {
+            service.update("1", request);
+        } catch (Exception e) {
+            assertEquals(ResourceNotFoundException.class, e.getClass());
+            assertEquals("Object not found. Id: 1, Type: UserResponse", e.getMessage());
+        }
+
+        verify(repository).findById(anyString());
+        verify(mapper, times(0)).update(any(), any());
+        verify(passwordEncoder, times(0)).encode(request.password());
+        verify(repository, times(0)).save(any(User.class));
+    }
+
+    @Test
+    void whenCallupdateWithInvalidEmailThenThrowIntegrityViolationException() {
+        final var request = generateMock(UpdateUserRequest.class);
+        final var entity = generateMock(User.class);
+
+        when(repository.findById(anyString())).thenReturn(Optional.of(entity));
+        when(repository.findByEmail(anyString())).thenReturn(Optional.of(entity));
+
+        try {
+            service.update("1", request);
+        } catch (Exception e) {
+            assertEquals(DataIntegrityViolationException.class, e.getClass());
+            assertEquals("E-mail [ " + request.email() + "] already exists", e.getMessage());
+        }
+
+        verify(repository).findById(anyString());
+        verify(repository).findByEmail(anyString());
+        verify(mapper, times(0)).update(any(), any());
+        verify(passwordEncoder, times(0)).encode(request.password());
+        verify(repository, times(0)).save(any(User.class));
+    }
+
+    @Test
+    void whenCallUpdateWithParamsThenGetSuccess() {
+        final var id = "1";
+        final var request = generateMock(UpdateUserRequest.class);
+        final var entity = generateMock(User.class).withId(id);
+
+        when(repository.findById(anyString())).thenReturn(Optional.of(entity));
+        when(repository.findByEmail(anyString())).thenReturn(Optional.of(entity));
+        when(mapper.update(any(), any())).thenReturn(entity);
+        when(repository.save(any())).thenReturn(entity);
+
+        service.update("1", request);
+
+        verify(repository).findById(anyString());
+        verify(repository).findByEmail(anyString());
+        verify(mapper).update(request, entity);
+        verify(passwordEncoder).encode(request.password());
+        verify(repository).save(any(User.class));
+        verify(mapper).fromEntity(any(User.class));
     }
 
 }

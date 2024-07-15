@@ -2,10 +2,13 @@ package br.com.carlosjunior.userserviceapi.controller.impl;
 
 import br.com.carlosjunior.userserviceapi.entity.User;
 import br.com.carlosjunior.userserviceapi.repository.UserRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import models.requests.CreateUserRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -14,6 +17,7 @@ import java.util.List;
 import static br.com.carlosjunior.userserviceapi.creator.CreatorUtils.generateMock;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -76,6 +80,27 @@ class UserControllerImplTest {
         ;
         userRepository.deleteAll(List.of(entity1, entity2));
 
+    }
+
+    @Test
+    void testSaveUserWithSuccess() throws Exception {
+        final var emailFake = "test91919191919@mail.com";
+        final var request = generateMock(CreateUserRequest.class).withEmail(emailFake);
+
+        mockMvc.perform(post("/api/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(request))
+        ).andExpect(status().isCreated());
+
+        userRepository.deleteByEmail(emailFake);
+    }
+
+    private String toJson(final Object object) throws Exception {
+        try {
+            return new ObjectMapper().writeValueAsString(object);
+        } catch (Exception e) {
+            throw new Exception("Error to convert object to json", e);
+        }
     }
 
 }

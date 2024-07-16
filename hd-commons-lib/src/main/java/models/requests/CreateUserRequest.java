@@ -15,18 +15,18 @@ public record CreateUserRequest(
 
         @Schema(description = "User name", example = "Carlos Junior")
         @NotEmpty(message = "Name cannot be empty")
-        @Size(min = 3, max = 50, message = "Name must contain between {min} and {max} caracters")
+        @Size(min = 3, max = 50, message = "Name must contain between {min} and {max} characters")
         String name,
 
         @Schema(description = "User email", example = "example@email.com")
         @Email(message = "Invalid email")
         @NotBlank(message = "Email cannot be empty")
-        @Size(min = 5, max = 50, message = "Email must contain between {min} and {max} caracters")
+        @Size(min = 6, max = 50, message = "Email must contain between {min} and {max} characters")
         String email,
 
 
         @Schema(description = "User password", example = "123456")
-        @Size(min = 5, max = 50, message = "Password must contain between {min} and {max} caracters")
+        @Size(min = 5, max = 50, message = "Password must contain between {min} and {max} characters")
         @NotBlank(message = "Password cannot be empty")
         String password,
 

@@ -12,17 +12,17 @@ import java.util.Set;
 public record UpdateUserRequest(
 
         @Schema(description = "User name", example = "Carlos Junior")
-        @Size(min = 3, max = 50, message = "Name must contain between {min} and {max} caracters")
+        @Size(min = 3, max = 50, message = "Name must contain between {min} and {max} characters")
         String name,
 
         @Schema(description = "User email", example = "example@email.com")
         @Email(message = "Invalid email")
-        @Size(min = 5, max = 50, message = "Email must contain between {min} and {max} caracters")
+        @Size(min = 6, max = 50, message = "Email must contain between {min} and {max} characters")
         String email,
 
 
         @Schema(description = "User password", example = "123456")
-        @Size(min = 5, max = 50, message = "Password must contain between {min} and {max} caracters")
+        @Size(min = 5, max = 50, message = "Password must contain between {min} and {max} characters")
         String password,
 
 

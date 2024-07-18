@@ -15,12 +15,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf().disable()
-                .authorizeHttpRequests(http -> http.requestMatchers(
+                .authorizeHttpRequests(http -> http
+                        .requestMatchers(
                                 new AntPathRequestMatcher("/swagger-ui/**"),
-                                new AntPathRequestMatcher("/swagger-ui.html"),
                                 new AntPathRequestMatcher("/v3/api-docs/**"),
-                                new AntPathRequestMatcher("/api/auth/login/**")
-                        ).permitAll().anyRequest().authenticated()
+                                new AntPathRequestMatcher("/api/auth/**")
+                        ).permitAll()
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().build();

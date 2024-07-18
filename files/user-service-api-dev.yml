@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: 'user-service-api'
+  data:
+    mongodb:
+      uri: 'mongodb+srv://helpdeskuser:helpdeskuser@cluster0.kpvzad8.mongodb.net/helpdeskdb?retryWrites=true&w=majority&appName=Cluster0'
+      auto-index-creation: true
+
+springdoc:
+  openapi:
+    title: 'User Service API'
+    description: "All services from user"
+    version: '1.0.0'
+
+server:
+  port: ${SERVER_PORT:8081}
+

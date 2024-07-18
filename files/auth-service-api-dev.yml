@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: auth-service-api
+  data:
+    mongodb:
+      uri: 'mongodb+srv://helpdeskuser:helpdeskuser@cluster0.kpvzad8.mongodb.net/helpdeskdb?retryWrites=true&w=majority&appName=Cluster0'
+      auto-index-creation: true
+
+jwt:
+  secret: 'SHeu0gcldBjYbOA7oHAb7ngmvu2qWRHEOX7qt+ernQYK5pUN+vQRiilBhiXp7x9tZN3e7TzvYbRTGdifNkm5ZWxvQE9S3QpPePmFplrqIxg='
+  expiration: 12000
+  expiration-sec:
+    refresh-token: 3600
+    
+server:
+  port: ${SERVER_PORT:8080}
